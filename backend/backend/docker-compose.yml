@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: streamverse_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Prince@123
+      MYSQL_DATABASE: streamverse_ott
+    ports:
+      - "3307:3306"
+    volumes:
+      - streamverse_mysql_data:/var/lib/mysql
+
+  backend:
+    build: .
+    container_name: streamverse_backend
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/streamverse_ott
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Prince@123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APP_UPLOAD_DIR: uploads
+      RAZORPAY_KEY_ID: demo_key
+      RAZORPAY_KEY_SECRET: demo_secret
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  streamverse_mysql_data:
