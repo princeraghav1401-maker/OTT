@@ -1,10 +1,10 @@
 import { Play, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+const BASE_URL = import.meta.env.VITE_API_URL;
 const getImageUrl = (url) => {
   if (!url) return "https://placehold.co/1600x800/080b14/ffffff?text=StreamVerse";
   if (url.startsWith("http")) return url;
-  return `http://localhost:8080${url}`;
+ return `${BASE_URL}${url}`;
 };
 
 const HeroBanner = ({ banner }) => {
