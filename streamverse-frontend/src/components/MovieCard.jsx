@@ -1,18 +1,34 @@
 import { motion } from "framer-motion";
 import { Crown, Play, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "";
 
 const getImageUrl = (url) => {
   if (!url) return "https://placehold.co/400x600/111827/ffffff?text=StreamVerse";
   if (url.startsWith("http")) return url;
-  return `http://localhost:8080${url}`;
+  return `${API_BASE_URL}${url}`;
 };
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const openDetails = () => {
     navigate(`/movies/${movie.id}`);
+  };
+
+  const playMovie = (e) => {
+    e.stopPropagation();
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    navigate(`/watch/movie/${movie.id}`);
   };
 
   return (
@@ -52,10 +68,7 @@ const MovieCard = ({ movie }) => {
           </span>
 
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/watch/movie/${movie.id}`);
-            }}
+            onClick={playMovie}
             className="rounded-full bg-primary p-2 text-white opacity-0 transition group-hover:opacity-100"
           >
             <Play size={15} fill="white" />
