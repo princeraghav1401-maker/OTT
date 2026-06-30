@@ -19,8 +19,24 @@ public class AdminSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
+
+        roleRepository.findByName("USER")
+                .orElseGet(() -> roleRepository.save(
+                        Role.builder()
+                                .name("USER")
+                                .build()
+                ));
+
         Role adminRole = roleRepository.findByName("ADMIN")
-                .orElseThrow(() -> new RuntimeException("ADMIN role not found"));
+                .orElseGet(() -> {
+
+                    Role role = Role.builder()
+                            .name("ADMIN")
+                            .build();
+
+                    return roleRepository.save(role);
+                });
 
         User admin = userRepository.findByEmail("prince.raghav1401@gmail.com")
                 .orElse(null);
