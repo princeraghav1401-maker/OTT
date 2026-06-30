@@ -94,6 +94,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "http://localhost:5174",
+                "https://ott-ashen-six.vercel.app",
                 "http://localhost:3000"
         ));
 
